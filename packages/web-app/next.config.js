@@ -2,7 +2,7 @@
 // https://www.npmjs.com/package/next-transpile-modules
 const withTM = require('next-transpile-modules')([
   'bar',
-  '@shared/db',
+  'db',
 ])
 
 module.exports = withTM()
