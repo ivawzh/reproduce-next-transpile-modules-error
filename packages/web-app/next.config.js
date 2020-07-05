@@ -4,6 +4,7 @@ const withTM = require('next-transpile-modules')([
   'bar',
   'a',
   'b',
+  'orm'
 ])
 
 module.exports = withTM()
