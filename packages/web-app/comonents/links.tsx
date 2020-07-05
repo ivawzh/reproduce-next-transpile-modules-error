@@ -7,6 +7,7 @@ export function Links() {
       <li><Link href='/a'>A</Link></li>
       <li><Link href='/b'>B</Link></li>
       <li><Link href='/commonjs'>Commonjs</Link></li>
+      <li><Link href='/orm'>ORM</Link></li>
     </ol>
   </div>
 }

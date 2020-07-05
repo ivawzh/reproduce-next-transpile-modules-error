@@ -1,6 +1,6 @@
 import foo from 'foo'
 import Bar from 'bar'
-import { superConnection } from 'commonjs'
+import { superConnection } from 'orm/dist'
 import { Links } from '../comonents/links'
 import { InferGetServerSidePropsType } from 'next'
 
