@@ -1,14 +1,15 @@
 import foo from 'foo'
 import Bar from 'bar'
-import Db from 'db'
+import A from 'a'
+import { Links } from '../comonents/links'
 
 export default function Home() {
   return (
     <div>
-      This page is failing
       <pre>{foo}</pre>
       <Bar />
-      <Db />
+      <A />
+      <Links />
     </div>
   )
 }
