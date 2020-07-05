@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -46,9 +57,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.superConnection = void 0;
+exports.superCreateConnection = exports.superConnection = void 0;
 require("reflect-metadata");
 var typeorm_1 = require("typeorm");
+var ormConfig = require("../ormconfig");
+var User_1 = require("./entity/User");
 __exportStar(require("typeorm"), exports);
 __exportStar(require("./entity/User"), exports);
 function superConnection() {
@@ -66,10 +79,7 @@ function superConnection() {
                     return [3 /*break*/, 4];
                 case 2:
                     error_1 = _a.sent();
-                    return [4 /*yield*/, typeorm_1.createConnection({
-                            type: 'sqlite',
-                            database: 'demo',
-                        })];
+                    return [4 /*yield*/, superCreateConnection()];
                 case 3:
                     newConn = _a.sent();
                     return [2 /*return*/, newConn];
@@ -79,4 +89,39 @@ function superConnection() {
     });
 }
 exports.superConnection = superConnection;
+// Doesn't work
+// const connectionOptionsReader = new ConnectionOptionsReader({
+//   root: path.join(path.dirname(require.resolve('orm')), '..')
+// })
+var connOpts;
+var connection;
+function getOptions() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            if (connOpts)
+                return [2 /*return*/, connOpts];
+            connOpts = __assign(__assign({}, ormConfig), { entities: [User_1.User] });
+            return [2 /*return*/, connOpts];
+        });
+    });
+}
+function superCreateConnection() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (connection)
+                        return [2 /*return*/, connection];
+                    return [4 /*yield*/, getOptions()];
+                case 1:
+                    connOpts = _a.sent();
+                    return [4 /*yield*/, typeorm_1.createConnection(connOpts)];
+                case 2:
+                    connection = _a.sent();
+                    return [2 /*return*/, connection];
+            }
+        });
+    });
+}
+exports.superCreateConnection = superCreateConnection;
 //# sourceMappingURL=index.js.map

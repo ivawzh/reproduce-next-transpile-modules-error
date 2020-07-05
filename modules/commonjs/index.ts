@@ -7,7 +7,7 @@ export async function superConnection() {
   } catch (error) {
     const newConn = await createConnection({
       type: 'sqlite',
-      database: 'demo',
+      database: 'demo-commonjs',
     })
     return newConn
   }

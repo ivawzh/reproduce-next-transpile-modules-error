@@ -2,10 +2,13 @@
   "extends": "../../tsconfig.json",
    "compileOnSave": true,
    "compilerOptions": {
+      "watch": true,
       "lib": [
          "es5",
          "es6"
       ],
+      "allowJs": true,
+      "checkJs": true,
       "target": "es5",
       "module": "commonjs",
       "moduleResolution": "node",
