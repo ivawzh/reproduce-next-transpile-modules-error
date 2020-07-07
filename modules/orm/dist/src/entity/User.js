@@ -29,6 +29,13 @@ var User = /** @class */ (function (_super) {
     function User() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    Object.defineProperty(User.prototype, "fullName", {
+        get: function () {
+            return this.firstName + " " + this.lastName + " !!";
+        },
+        enumerable: false,
+        configurable: true
+    });
     __decorate([
         typeorm_1.PrimaryGeneratedColumn(),
         __metadata("design:type", Number)

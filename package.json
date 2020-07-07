@@ -5,11 +5,16 @@
       "packages/*",
       "modules/*"
     ],
-    "nohoist": ["**/typeorm/**", "**/typeorm"]
+    "nohoist": [
+      "**/typeorm/**",
+      "**/typeorm"
+    ]
   },
   "scripts": {
-    "dev": "yarn --cwd packages/web-app dev",
-    "build": "yarn --cwd packages/web-app build",
-    "start": "yarn --cwd packages/web-app start"
+    "dev-all": "yarn workspaces run dev",
+    "build-all": "yarn workspaces run build",
+    "start-all": "yarn workspaces run start"
+  },
+  "devDependencies": {
   }
 }

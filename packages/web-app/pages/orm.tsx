@@ -1,6 +1,6 @@
 import foo from 'foo'
 import Bar from 'bar'
-import { superConnection, User } from 'orm/dist/src'
+import { superConnection, User } from 'orm'
 import { Links } from '../comonents/links'
 import { InferGetServerSidePropsType } from 'next'
 
@@ -21,6 +21,7 @@ export default function Home(
         {props.users.map(u =>
           <li key={u.id}>
             <div>ID {u.id}</div>
+            <div>Full name {u.fullName}</div>
             <div>First name {u.firstName}</div>
             <div>Last name {u.lastName}</div>
             <div>Age {u.age}</div>
@@ -48,6 +49,7 @@ export async function getServerSideProps() {
         age: u.age,
         firstName: u.firstName,
         lastName: u.lastName,
+        fullName: u.fullName,
         id: u.id,
       })),
     },

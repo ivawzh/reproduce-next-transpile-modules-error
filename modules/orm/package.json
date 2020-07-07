@@ -6,6 +6,7 @@
    "description": "Awesome project developed with TypeORM.",
    "devDependencies": {
       "@types/node": "^8.0.29",
+      "@types/node-vault": "^0.9.13",
       "ts-node": "3.3.0",
       "typescript": "^3.9.6"
    },
@@ -15,6 +16,7 @@
       "typeorm": "0.2.25"
    },
    "scripts": {
+      "dev": "rm -rf dist && tsc --watch",
       "build": "rm -rf dist && tsc",
       "start": "ts-node src/index.ts"
    }

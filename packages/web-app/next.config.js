@@ -5,7 +5,6 @@ const withTM = require('next-transpile-modules')([
   'a',
   'b',
   'commonjs',
-  'orm',
 ])
 
 module.exports = withTM()

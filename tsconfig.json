@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "baseUrl": ".",
-    "paths": {
-      "*": ["ts-modules/*", "packages/*"]
-    }
+    "composite": true,
+
+    // "baseUrl": ".",
+    // "paths": {
+    //   "*": ["ts-modules/*", "packages/*"]
+    // }
   },
 }

@@ -1,8 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-   "compileOnSave": true,
    "compilerOptions": {
-      "watch": true,
       "lib": [
          "es5",
          "es6"
@@ -15,6 +13,9 @@
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "sourceMap": true,
-      "outDir": "dist"
-   }
+      "outDir": "dist",
+      // "rootDirs": ["src", "."] // redundant, this is same as default
+   },
+   // "include": ["src", "ormconfig.js"] // redundant, this is same as default
+   // "compileOnSave": true // only works in Visual Studio, but not vscode
 }
