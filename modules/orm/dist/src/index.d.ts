@@ -5,5 +5,5 @@ declare type ormConfig = ConnectionOptions;
 export { ormConfig };
 export * from 'typeorm';
 export * from './entity/User';
-export declare function superConnection(): Promise<Connection>;
-export declare function superCreateConnection(): Promise<Connection>;
+export declare const a = 2;
+export declare function ensureConnection(name?: string): Promise<Connection>;

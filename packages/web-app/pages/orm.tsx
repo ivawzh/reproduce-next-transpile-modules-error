@@ -1,6 +1,6 @@
 import foo from 'foo'
 import Bar from 'bar'
-import { superConnection, User } from 'orm'
+import { ensureConnection, User, a } from 'orm'
 import { Links } from '../comonents/links'
 import { InferGetServerSidePropsType } from 'next'
 
@@ -33,7 +33,9 @@ export default function Home(
 }
 
 export async function getServerSideProps() {
-  const conn = await superConnection()
+  console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+  console.log(a)
+  const conn = await ensureConnection()
   const user = new User()
   user.firstName = 'Ivan'
   user.lastName = 'Wang'

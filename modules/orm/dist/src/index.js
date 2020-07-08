@@ -57,38 +57,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.superCreateConnection = exports.superConnection = void 0;
+exports.ensureConnection = exports.a = void 0;
 require("reflect-metadata");
 var typeorm_1 = require("typeorm");
 var ormConfig = require("../ormconfig");
 var User_1 = require("./entity/User");
 __exportStar(require("typeorm"), exports);
 __exportStar(require("./entity/User"), exports);
-function superConnection() {
-    return __awaiter(this, void 0, void 0, function () {
-        var conn, error_1, newConn;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 2, , 4]);
-                    return [4 /*yield*/, typeorm_1.getConnection()];
-                case 1:
-                    conn = _a.sent();
-                    if (conn)
-                        return [2 /*return*/, conn];
-                    return [3 /*break*/, 4];
-                case 2:
-                    error_1 = _a.sent();
-                    return [4 /*yield*/, superCreateConnection()];
-                case 3:
-                    newConn = _a.sent();
-                    return [2 /*return*/, newConn];
-                case 4: return [2 /*return*/];
-            }
-        });
-    });
-}
-exports.superConnection = superConnection;
+exports.a = 2;
+// export async function superConnection() {
+//   try {
+//     const conn = await getConnection()
+//     if (conn) return conn
+//   } catch (error) {
+//     const newConn = await superCreateConnection()
+//     return newConn
+//   }
+// }
+// export async function superCreateConnection(): Promise<Connection> {
+//   if (connection) return connection
+//   connOpts = await getOptions()
+//   connection = await createConnection(connOpts)
+//   return connection
+// }
 // Doesn't work
 // const connectionOptionsReader = new ConnectionOptionsReader({
 //   root: path.join(path.dirname(require.resolve('orm')), '..')
@@ -105,23 +96,60 @@ function getOptions() {
         });
     });
 }
-function superCreateConnection() {
+function ensureConnection(name) {
+    if (name === void 0) { name = 'default'; }
     return __awaiter(this, void 0, void 0, function () {
+        var connectionManager, connOpts, connection_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (connection)
-                        return [2 /*return*/, connection];
+                    connectionManager = typeorm_1.getConnectionManager();
                     return [4 /*yield*/, getOptions()];
                 case 1:
                     connOpts = _a.sent();
-                    return [4 /*yield*/, typeorm_1.createConnection(connOpts)];
+                    if (!connectionManager.has(name)) return [3 /*break*/, 4];
+                    connection_1 = connectionManager.get(name);
+                    if (!(process.env.NODE_ENV !== 'production')) return [3 /*break*/, 3];
+                    return [4 /*yield*/, updateConnectionEntities(connection_1, connOpts.entities)];
                 case 2:
-                    connection = _a.sent();
-                    return [2 /*return*/, connection];
+                    _a.sent();
+                    _a.label = 3;
+                case 3: return [2 /*return*/, connection_1];
+                case 4: return [4 /*yield*/, connectionManager.create(__assign({ name: name }, connOpts)).connect()];
+                case 5: return [2 /*return*/, _a.sent()];
             }
         });
     });
 }
-exports.superCreateConnection = superCreateConnection;
+exports.ensureConnection = ensureConnection;
+function entitiesChanged(prevEntities, newEntities) {
+    if (prevEntities.length !== newEntities.length)
+        return true;
+    for (var i = 0; i < prevEntities.length; i++) {
+        if (prevEntities[i] !== newEntities[i])
+            return true;
+    }
+    return false;
+}
+function updateConnectionEntities(connection, entities) {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!entitiesChanged(connection.options.entities, entities))
+                        return [2 /*return*/];
+                    // @ts-ignore
+                    connection.options.entities = entities;
+                    // @ts-ignore
+                    connection.buildMetadatas();
+                    if (!connection.options.synchronize) return [3 /*break*/, 2];
+                    return [4 /*yield*/, connection.synchronize()];
+                case 1:
+                    _a.sent();
+                    _a.label = 2;
+                case 2: return [2 /*return*/];
+            }
+        });
+    });
+}
 //# sourceMappingURL=index.js.map
