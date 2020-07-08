@@ -16,6 +16,6 @@ export class User extends BaseEntity {
   age: number
 
   get fullName() {
-    return `${this.firstName} ${this.lastName} !!`
+    return `${this.firstName} ${this.lastName} ??!!!!`
   }
 }
