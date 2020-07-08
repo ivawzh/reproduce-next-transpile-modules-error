@@ -57,29 +57,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ensureConnection = exports.a = void 0;
+exports.superCreateConnection = exports.a = void 0;
 require("reflect-metadata");
 var typeorm_1 = require("typeorm");
 var ormConfig = require("../ormconfig");
 var User_1 = require("./entity/User");
 __exportStar(require("typeorm"), exports);
 __exportStar(require("./entity/User"), exports);
-exports.a = 2;
-// export async function superConnection() {
-//   try {
-//     const conn = await getConnection()
-//     if (conn) return conn
-//   } catch (error) {
-//     const newConn = await superCreateConnection()
-//     return newConn
-//   }
-// }
-// export async function superCreateConnection(): Promise<Connection> {
-//   if (connection) return connection
-//   connOpts = await getOptions()
-//   connection = await createConnection(connOpts)
-//   return connection
-// }
+exports.a = 3;
+function superCreateConnection() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (connection)
+                        return [2 /*return*/, connection];
+                    return [4 /*yield*/, getOptions()];
+                case 1:
+                    connOpts = _a.sent();
+                    return [4 /*yield*/, typeorm_1.createConnection(connOpts)];
+                case 2:
+                    connection = _a.sent();
+                    return [2 /*return*/, connection];
+            }
+        });
+    });
+}
+exports.superCreateConnection = superCreateConnection;
 // Doesn't work
 // const connectionOptionsReader = new ConnectionOptionsReader({
 //   root: path.join(path.dirname(require.resolve('orm')), '..')
@@ -96,60 +100,42 @@ function getOptions() {
         });
     });
 }
-function ensureConnection(name) {
-    if (name === void 0) { name = 'default'; }
-    return __awaiter(this, void 0, void 0, function () {
-        var connectionManager, connOpts, connection_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    connectionManager = typeorm_1.getConnectionManager();
-                    return [4 /*yield*/, getOptions()];
-                case 1:
-                    connOpts = _a.sent();
-                    if (!connectionManager.has(name)) return [3 /*break*/, 4];
-                    connection_1 = connectionManager.get(name);
-                    if (!(process.env.NODE_ENV !== 'production')) return [3 /*break*/, 3];
-                    return [4 /*yield*/, updateConnectionEntities(connection_1, connOpts.entities)];
-                case 2:
-                    _a.sent();
-                    _a.label = 3;
-                case 3: return [2 /*return*/, connection_1];
-                case 4: return [4 /*yield*/, connectionManager.create(__assign({ name: name }, connOpts)).connect()];
-                case 5: return [2 /*return*/, _a.sent()];
-            }
-        });
-    });
-}
-exports.ensureConnection = ensureConnection;
-function entitiesChanged(prevEntities, newEntities) {
-    if (prevEntities.length !== newEntities.length)
-        return true;
-    for (var i = 0; i < prevEntities.length; i++) {
-        if (prevEntities[i] !== newEntities[i])
-            return true;
-    }
-    return false;
-}
-function updateConnectionEntities(connection, entities) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!entitiesChanged(connection.options.entities, entities))
-                        return [2 /*return*/];
-                    // @ts-ignore
-                    connection.options.entities = entities;
-                    // @ts-ignore
-                    connection.buildMetadatas();
-                    if (!connection.options.synchronize) return [3 /*break*/, 2];
-                    return [4 /*yield*/, connection.synchronize()];
-                case 1:
-                    _a.sent();
-                    _a.label = 2;
-                case 2: return [2 /*return*/];
-            }
-        });
-    });
-}
+// export async function superConnection() {
+//   try {
+//     const conn = await getConnection()
+//     if (conn) return conn
+//   } catch (error) {
+//     const newConn = await superCreateConnection()
+//     return newConn
+//   }
+// }
+// export async function ensureConnection(name: string = 'default'): Promise<Connection> {
+//   const connectionManager = getConnectionManager()
+//   const connOpts = await getOptions()
+//   if (connectionManager.has(name)) {
+//     const connection = connectionManager.get(name)
+//     if (process.env.NODE_ENV !== 'production') {
+//       await updateConnectionEntities(connection, connOpts.entities)
+//     }
+//     return connection
+//   }
+//   return await connectionManager.create({ name, ...connOpts }).connect()
+// }
+// function entitiesChanged(prevEntities: any[], newEntities: any[]): boolean {
+//   if (prevEntities.length !== newEntities.length) return true
+//   for (let i = 0; i < prevEntities.length; i++) {
+//     if (prevEntities[i] !== newEntities[i]) return true
+//   }
+//   return false
+// }
+// async function updateConnectionEntities(connection: Connection, entities: any[]) {
+//   if (!entitiesChanged(connection.options.entities, entities)) return
+//   // @ts-ignore
+//   connection.options.entities = entities
+//   // @ts-ignore
+//   connection.buildMetadatas()
+//   if (connection.options.synchronize) {
+//     await connection.synchronize()
+//   }
+// }
 //# sourceMappingURL=index.js.map

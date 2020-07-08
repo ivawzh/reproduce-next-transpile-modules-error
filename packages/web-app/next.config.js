@@ -21,11 +21,15 @@ module.exports = withTM({
     // Community plugin list: https://github.com/webpack-contrib/awesome-webpack#webpack-plugins
 
     if (dev) {
-      // hot reload when any 'dist' folder is updated inside monorepo
+      // hot reload when any 'dist' folders are updated within monorepo
       const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin')
       const projectRootAbsPath = path.join(__dirname, '../../')
       const dirs = findDirs(projectRootAbsPath, [/dist$/], [/node_modules/, /\./])
       config.plugins.push(new ExtraWatchWebpackPlugin({dirs}))
+
+      // clear node-require-cache after every compilation. otherwise it won't load the new version libs even after recompiling dependencies
+      const clearRequireCachePlugin = require('webpack-clear-require-cache-plugin')
+      config.plugins.push(clearRequireCachePlugin([/orm/]))
     }
     return config
   },

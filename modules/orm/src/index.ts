@@ -1,7 +1,6 @@
 import 'reflect-metadata'
 import { getConnection, createConnection, ConnectionOptionsReader, Connection, ConnectionOptions, getConnectionManager } from 'typeorm'
 import * as ormConfig from '../ormconfig'
-import * as path from 'path'
 import { User } from './entity/User'
 
 declare type ormConfig = ConnectionOptions
@@ -10,24 +9,14 @@ export { ormConfig }
 export * from 'typeorm'
 export * from './entity/User'
 
-export const a = 2
+export const a = 3
 
-// export async function superConnection() {
-//   try {
-//     const conn = await getConnection()
-//     if (conn) return conn
-//   } catch (error) {
-//     const newConn = await superCreateConnection()
-//     return newConn
-//   }
-// }
-
-// export async function superCreateConnection(): Promise<Connection> {
-//   if (connection) return connection
-//   connOpts = await getOptions()
-//   connection = await createConnection(connOpts)
-//   return connection
-// }
+export async function superCreateConnection(): Promise<Connection> {
+  if (connection) return connection
+  connOpts = await getOptions()
+  connection = await createConnection(connOpts)
+  return connection
+}
 
 // Doesn't work
 // const connectionOptionsReader = new ConnectionOptionsReader({
@@ -54,43 +43,53 @@ async function getOptions(): Promise<ConnectionOptions> {
   return connOpts
 }
 
-export async function ensureConnection(name: string = 'default'): Promise<Connection> {
-  const connectionManager = getConnectionManager()
-  const connOpts = await getOptions()
+// export async function superConnection() {
+//   try {
+//     const conn = await getConnection()
+//     if (conn) return conn
+//   } catch (error) {
+//     const newConn = await superCreateConnection()
+//     return newConn
+//   }
+// }
 
-  if (connectionManager.has(name)) {
-    const connection = connectionManager.get(name)
+// export async function ensureConnection(name: string = 'default'): Promise<Connection> {
+//   const connectionManager = getConnectionManager()
+//   const connOpts = await getOptions()
 
-    if (process.env.NODE_ENV !== 'production') {
-      await updateConnectionEntities(connection, connOpts.entities)
-    }
+//   if (connectionManager.has(name)) {
+//     const connection = connectionManager.get(name)
 
-    return connection
-  }
+//     if (process.env.NODE_ENV !== 'production') {
+//       await updateConnectionEntities(connection, connOpts.entities)
+//     }
 
-  return await connectionManager.create({ name, ...connOpts }).connect()
-}
+//     return connection
+//   }
 
-function entitiesChanged(prevEntities: any[], newEntities: any[]): boolean {
-  if (prevEntities.length !== newEntities.length) return true
+//   return await connectionManager.create({ name, ...connOpts }).connect()
+// }
 
-  for (let i = 0; i < prevEntities.length; i++) {
-    if (prevEntities[i] !== newEntities[i]) return true
-  }
+// function entitiesChanged(prevEntities: any[], newEntities: any[]): boolean {
+//   if (prevEntities.length !== newEntities.length) return true
 
-  return false
-}
+//   for (let i = 0; i < prevEntities.length; i++) {
+//     if (prevEntities[i] !== newEntities[i]) return true
+//   }
 
-async function updateConnectionEntities(connection: Connection, entities: any[]) {
-  if (!entitiesChanged(connection.options.entities, entities)) return
+//   return false
+// }
 
-  // @ts-ignore
-  connection.options.entities = entities
+// async function updateConnectionEntities(connection: Connection, entities: any[]) {
+//   if (!entitiesChanged(connection.options.entities, entities)) return
 
-  // @ts-ignore
-  connection.buildMetadatas()
+//   // @ts-ignore
+//   connection.options.entities = entities
 
-  if (connection.options.synchronize) {
-    await connection.synchronize()
-  }
-}
+//   // @ts-ignore
+//   connection.buildMetadatas()
+
+//   if (connection.options.synchronize) {
+//     await connection.synchronize()
+//   }
+// }

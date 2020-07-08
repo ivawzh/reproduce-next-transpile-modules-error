@@ -24,8 +24,8 @@
     "@types/node": "^14.0.14",
     "@types/react": "^16.9.41",
     "extra-watch-webpack-plugin": "^1.0.3",
-    "globby": "^11.0.1",
     "nodemon": "^2.0.4",
-    "typescript": "^3.9.6"
+    "typescript": "^3.9.6",
+    "webpack-clear-require-cache-plugin": "^0.0.4"
   }
 }

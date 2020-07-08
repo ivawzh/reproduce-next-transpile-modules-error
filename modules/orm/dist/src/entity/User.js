@@ -31,7 +31,7 @@ var User = /** @class */ (function (_super) {
     }
     Object.defineProperty(User.prototype, "fullName", {
         get: function () {
-            return this.firstName + " " + this.lastName + " ~~~~";
+            return this.firstName + " " + this.lastName + " ~~~";
         },
         enumerable: false,
         configurable: true
